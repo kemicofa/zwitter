@@ -1,3 +1,3 @@
 [workspace]
-members = ["server", "domain", "errors", "macros"]
+members = ["server", "domain", "errors", "macros", "migration"]
 resolver = "3"

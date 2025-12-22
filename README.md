@@ -2,7 +2,15 @@
 
 Open source twitter alternative
 
-## Local Development
+## Dev
+
+### Requirements
+
+```bash
+cargo install sea-orm-cli@^2.0.0-rc
+```
+
+### Local Development
 
 ```bash
 make help
