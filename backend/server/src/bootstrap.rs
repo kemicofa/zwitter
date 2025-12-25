@@ -1,30 +1,23 @@
-use domain::features::create_user::{ CreateUserFeature };
+use std::{ sync::Arc };
+
+use domain::{ features::create_user::{ CreateUser, CreateUserFeature } };
+use macros::barc;
+
+use crate::database::users_repository_postgres::UsersRepositoryPostgres;
+
+pub struct DatabaseConnector {}
 
 pub struct Dependencies {
     pub create_user: Box<CreateUserFeature>,
 }
 
-#[cfg(test)]
-pub fn build_dependencies() -> Dependencies {
-    use async_trait::async_trait;
-    use domain::{ dtos::user::CreateUserDTO, features::feature::Feature };
-    use errors::ZwitterError;
-
-    struct FakeCreateUser;
-
-    #[async_trait]
-    impl Feature<CreateUserDTO, ()> for FakeCreateUser {
-        async fn execute(&self, _dto: CreateUserDTO) -> Result<(), ZwitterError> {
-            Ok(())
-        }
-    }
+pub fn build_dependencies(connection: ()) -> Dependencies {
+    let c = Arc::new(connection);
+    let create_user = Box::new(CreateUser {
+        users_repository: barc!(UsersRepositoryPostgres {}),
+    });
 
     Dependencies {
-        create_user: Box::new(FakeCreateUser),
+        create_user,
     }
-}
-
-#[cfg(not(test))]
-pub fn build_dependencies() -> Dependencies {
-    todo!();
 }
