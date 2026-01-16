@@ -12,7 +12,7 @@ check-podman:
 	  exit 1; \
 	else \
 	  echo "✅ podman CLI is present: $$(podman -v)"; \
-	fi \
+	fi; \
 	if ! podman machine inspect >/dev/null 2>&1; then \
 	  echo "⏳ No podman machine found. Initializing…"; \
 	  podman machine init --now || { echo "❌ Failed to init podman machine"; exit 1; }; \
